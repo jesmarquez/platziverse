@@ -1,4 +1,12 @@
 node_modules/
 /npm-debug.log
 package-lock.json
-
+Backups/
+Cache/
+CachedData/
+Cookies
+Cookies-journal
+storage.json
+Preferences
+machineid
+Local Storage/

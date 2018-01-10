@@ -23,6 +23,10 @@ module.exports = function setupAgentModel (config) {
       type: Sequelize.STRING,
       allowNull: false
     },
+    pid: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
     connected: {
       type: Sequelize.STRING,
       allowNull: false,

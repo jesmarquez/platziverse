@@ -1,16 +1,37 @@
 'use strict'
 
 const test = require('ava')
+const sinon = require('sinon')
+const proxyquire = require('proxyquire')
 
-let db = null
 let config = {
   logging: function () {}
 }
 
+let MetricStub = {
+  belongsTo: sinon.spy()
+}
+
+let AgentStub = null
+let db = null
+let sandbox = null
+
 test.beforeEach(async () => {
-  const setupDatabase = require('../')
+  sandbox = sinon.sandbox.create()
+  AgentStub = {
+    hasMany: sandbox.spy()
+  }
+  
+  const setupDatabase = proxyquire('../', {
+    './models/agent': () => AgentStub,
+    './models/metric': () => MetricStub
+  })
 
   db = await setupDatabase(config)
+})
+
+test.afterEach(() => {
+  sandbox && sinon.sandbox.restore()
 })
 
 test('pass', t => {
@@ -19,4 +40,11 @@ test('pass', t => {
 
 test('Agent', t => {
   t.truthy(db.Agent, 'Agent must exist!')
+})
+
+test.serial('Setup', t => {
+  t.true(AgentStub.hasMany.called, 'AgentModel.hasMany was executed')
+  t.true(AgentStub.hasMany.calledWith(MetricStub), 'Argument should be the Metricmodel')
+  t.true(MetricStub.belongsTo.called, 'MetricModel.belongsTo was created')
+  t.true(MetricStub.belongsTo.calledWith(AgentStub), 'Argument should be the Agentmodel')
 })

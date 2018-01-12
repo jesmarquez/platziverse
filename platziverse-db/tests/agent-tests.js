@@ -45,6 +45,6 @@ test('Agent', t => {
 test.serial('Setup', t => {
   t.true(AgentStub.hasMany.called, 'AgentModel.hasMany was executed')
   t.true(AgentStub.hasMany.calledWith(MetricStub), 'Argument should be the Metricmodel')
-  t.true(MetricStub.belongsTo.called, 'MetricModel.belongsTo was created')
+  t.true(MetricStub.belongsTo.called, 'MetricModel.belongsTo was executed')
   t.true(MetricStub.belongsTo.calledWith(AgentStub), 'Argument should be the Agentmodel')
 })

@@ -16,3 +16,4 @@ Local Storage/
 !.vscode/launch.json
 !.vscode/extensions.json
 .nyc_output/
+coverage/

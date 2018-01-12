@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>28/28</span>
+        <span class='fraction'>40/40</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -32,12 +32,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>8/8</span>
+        <span class='fraction'>9/9</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>26/26</span>
+        <span class='fraction'>37/37</span>
       </div>
     </div>
   </div>
@@ -92,7 +92,23 @@
 47
 48
 49
-50</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -100,32 +116,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -141,11 +163,23 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict'
 &nbsp;
 const test = require('ava')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
+&nbsp;
+const agentFixtures = require('./fixtures/agent')
 &nbsp;
 let config = {
   logging: function () {}
@@ -155,6 +189,8 @@ let MetricStub = {
   belongsTo: sinon.spy()
 }
 &nbsp;
+let single = Object.assign({}, agentFixtures.single)
+let id = 1
 let AgentStub = null
 let db = null
 let sandbox = null
@@ -165,6 +201,8 @@ test.beforeEach(async () =&gt; {
     hasMany: sandbox.spy()
   }
   
+  AgentStub.findById = sandbox.stub()
+  AgentStub.findById.withArgs(id).returns(Promise.resolve(agentFixtures.byId(id)))
   const setupDatabase = proxyquire('../', {
     './models/agent': () =&gt; AgentStub,
     './models/metric': () =&gt; MetricStub
@@ -188,15 +226,25 @@ test('Agent', t =&gt; {
 test.serial('Setup', t =&gt; {
   t.true(AgentStub.hasMany.called, 'AgentModel.hasMany was executed')
   t.true(AgentStub.hasMany.calledWith(MetricStub), 'Argument should be the Metricmodel')
-  t.true(MetricStub.belongsTo.called, 'MetricModel.belongsTo was created')
+  t.true(MetricStub.belongsTo.called, 'MetricModel.belongsTo was executed')
   t.true(MetricStub.belongsTo.calledWith(AgentStub), 'Argument should be the Agentmodel')
+})
+&nbsp;
+test.serial('Agent#findById', async t =&gt; {
+  let agent = await db.Agent.findById(id)
+&nbsp;
+  t.true(AgentStub.findById.called, 'findById should be called on model')
+  t.true(AgentStub.findById.calledOnce, 'findById should be called once')
+  t.true(AgentStub.findById.calledWith(id), 'findById should be called with specified id')
+&nbsp;
+  t.deepEqual(agent, agentFixtures.byId(id), 'should be the same')
 })</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Jan 11 2018 16:15:18 GMT-0500 (Hora est. Pacífico, Sudamérica)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 12 2018 16:06:22 GMT-0500 (Hora est. Pacífico, Sudamérica)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

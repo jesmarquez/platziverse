@@ -4,8 +4,8 @@
   "description": "A Simple IoT Platform - DB Module",
   "main": "index.js",
   "scripts": {
-    "test": "SET DEBUG=platziverse:* && nyc --reporter=lcov ava tests/ --verbose",
-    "setup": "SET DEBUG=platziverse:* && node setup.js",
+    "test": "DEBUG=platziverse:* && nyc --reporter=lcov ava tests/ --verbose",
+    "setup": "DEBUG=platziverse:* && node setup.js",
     "lint": "standard"
   },
   "repository": {

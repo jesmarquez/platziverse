@@ -33,7 +33,7 @@ module.exports = async function (config) {
     await sequelize.sync({ force: true })
   }
   const Agent = setupAgent(AgentModel)
-  const Metric = setupMetricModel(MetricModel, AgentModel)
+  const Metric = setupMetric(MetricModel, AgentModel)
 
   return {
     Agent,

@@ -33,7 +33,6 @@ module.exports = function setupMetric (MetricModel, AgentModel) {
       raw: true
     })
   }
-
   async function create (uuid, metric) {
     const agent = await AgentModel.findOne({
       where: { uuid }

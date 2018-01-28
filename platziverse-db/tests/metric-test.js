@@ -33,6 +33,11 @@ test.beforeEach(async () => {
     toJSON () { return newMetric }
   }))
 
+  MetricStub.findByAgentUuid = sandbox.stub()
+  MetricStub.findByAgentUuid.withArgs(uuid).returns(Promise.resolve({
+    
+  }))
+
   const setupDatabase = proxyquire('../', {
     './models/agent': () => AgentStub,
     './models/metric': () => MetricStub

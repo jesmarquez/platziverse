@@ -4,6 +4,8 @@ const test = require('ava')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 
+const metricFixtures = require('./fixtures/metric')
+
 let sandbox = null
 let MetricStub = null
 let db = null
@@ -35,7 +37,7 @@ test.beforeEach(async () => {
 
   MetricStub.findByAgentUuid = sandbox.stub()
   MetricStub.findByAgentUuid.withArgs(uuid).returns(Promise.resolve({
-    
+    toJSON () { return metricFixtures.findByAgentUuid(uuid) }
   }))
 
   const setupDatabase = proxyquire('../', {

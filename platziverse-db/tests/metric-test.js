@@ -5,23 +5,57 @@ const sinon = require('sinon')
 const proxyquire = require('proxyquire')
 
 const metricFixtures = require('./fixtures/metric')
+const agentFixtures = require('./fixtures/agent')
 
 let sandbox = null
 let MetricStub = null
 let db = null
 
 let uuid = 'yyy-yyy-yyy'
+let type = 'disco'
 let newMetric = {
-  type: 'segundos',
+  type: 'cpu',
   value: '1000'
+}
+
+let uuidArgs = { where: { uuid } }
+
+let AgentStub = {
+  hasMany: sinon.spy()
+}
+
+let agentUuidArgs = {
+  attributes: [ 'type' ],
+  group: [ 'type' ],
+  include: [{
+    attributes: [],
+    model: AgentStub,
+    where: {
+      uuid
+    }
+  }],
+  raw: true
+}
+
+let typeAgentUuidArgs = {
+  attributes: [ 'id', 'type', 'value', 'createdAt' ],
+  where: {
+    type
+  },
+  limit: 20,
+  order: [[ 'createdAt', 'DESC' ]],
+  include: [{
+    attributes: [],
+    model: AgentStub,
+    where: {
+      uuid
+    }
+  }],
+  raw: true
 }
 
 let config = {
   logging: function () {}
-}
-
-let AgentStub = {
-  hasMany: sinon.spy()
 }
 test.beforeEach(async () => {
   sandbox = sinon.sandbox.create()
@@ -29,6 +63,10 @@ test.beforeEach(async () => {
   MetricStub = {
     belongsTo: sandbox.spy()
   }
+
+  // Model findOne Stub
+  AgentStub.findOne = sandbox.stub()
+  AgentStub.findOne.withArgs(uuidArgs).returns(Promise.resolve(agentFixtures.byUuid(uuid)))
 
   MetricStub.create = sandbox.stub()
   MetricStub.create.withArgs(uuid, newMetric).returns(Promise.resolve({
@@ -39,6 +77,18 @@ test.beforeEach(async () => {
   MetricStub.findByAgentUuid.withArgs(uuid).returns(Promise.resolve({
     toJSON () { return metricFixtures.findByAgentUuid(uuid) }
   }))
+
+  // Model findByTypeAgentUuid
+  MetricStub.findByTypeAgentUuid = sandbox.stub()
+  MetricStub.findByTypeAgentUuid.withArgs(uuid).returns(Promise.resolve({
+    toJSON () { return metricFixtures.findByTypeAgent(uuid) }
+  }))
+
+  // Model findAll stub
+  MetricStub.findAll = sandbox.stub()
+  MetricStub.findAll.withArgs().returns(Promise.resolve(metricFixtures.all))
+  MetricStub.findAll.withArgs(agentUuidArgs).returns(Promise.resolve(metricFixtures.findByAgentUuid(uuid)))
+  MetricStub.findAll.withArgs(typeAgentUuidArgs).returns(Promise.resolve(metricFixtures.findByTypeAgentUuid(type, uuid)))
 
   const setupDatabase = proxyquire('../', {
     './models/agent': () => AgentStub,
@@ -65,4 +115,14 @@ test.serial('Setup', t => {
   t.true(AgentStub.hasMany.calledWith(MetricStub), 'Argument should be the Metricmodel')
   t.true(MetricStub.belongsTo.called, 'MetricModel.belongsTo was executed')
   t.true(MetricStub.belongsTo.calledWith(AgentStub), 'Argument should be the Agentmodel')
+})
+
+test.serial('Metric#findByTypeAgentUuid', async t => {
+  let metric = await db.Metric.findByTypeAgentUuid(type, uuid)
+
+  t.true(MetricStub.findAll.called, 'findByTypeAgentUuid should be called on model')
+  t.true(MetricStub.findAll.calledOnce, 'findAll should be called once')
+  t.true(MetricStub.findAll.calledWith(typeAgentUuidArgs), 'findAll should be called with typeAgentUuidArgs')
+
+  t.deepEqual(metric, metricFixtures.findByTypeAgentUuid(type, uuid), 'metric should be the same')
 })

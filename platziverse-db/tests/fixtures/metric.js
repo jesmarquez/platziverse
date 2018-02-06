@@ -26,8 +26,8 @@ function extend (obj, values) {
   return Object.assign(clone, values)
 }
 
-function findByTypeAgentUuid (uuid) {
-  return metrics.filter(m => m.agent === agentFixtures.byUuid(uuid).id)
+function findByTypeAgentUuid (type, uuid) {
+  return metrics.filter(m => m.agent === agentFixtures.byUuid(uuid).id && m.type === type)
 }
 
 function findByAgentUuid (uuid) {

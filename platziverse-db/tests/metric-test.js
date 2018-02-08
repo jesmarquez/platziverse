@@ -69,7 +69,7 @@ test.beforeEach(async () => {
   AgentStub.findOne.withArgs(uuidArgs).returns(Promise.resolve(agentFixtures.byUuid(uuid)))
 
   MetricStub.create = sandbox.stub()
-  MetricStub.create.withArgs(uuid, newMetric).returns(Promise.resolve({
+  MetricStub.create.withArgs(newMetric).returns(Promise.resolve({
     toJSON () { return newMetric }
   }))
 
@@ -85,6 +85,7 @@ test.beforeEach(async () => {
   }))
 
   // Model findAll stub
+
   MetricStub.findAll = sandbox.stub()
   MetricStub.findAll.withArgs().returns(Promise.resolve(metricFixtures.all))
   MetricStub.findAll.withArgs(agentUuidArgs).returns(Promise.resolve(metricFixtures.findByAgentUuid(uuid)))
@@ -120,9 +121,33 @@ test.serial('Setup', t => {
 test.serial('Metric#findByTypeAgentUuid', async t => {
   let metric = await db.Metric.findByTypeAgentUuid(type, uuid)
 
-  t.true(MetricStub.findAll.called, 'findByTypeAgentUuid should be called on model')
+  t.true(MetricStub.findAll.called, 'findAll should be called on model')
   t.true(MetricStub.findAll.calledOnce, 'findAll should be called once')
   t.true(MetricStub.findAll.calledWith(typeAgentUuidArgs), 'findAll should be called with typeAgentUuidArgs')
 
   t.deepEqual(metric, metricFixtures.findByTypeAgentUuid(type, uuid), 'metric should be the same')
+})
+
+test.serial('Metric#findByAgentUuid', async t => {
+  let metric = await db.Metric.findByAgentUuid(uuid)
+
+  t.true(MetricStub.findAll.called, 'findAll should be called on model')
+  t.true(MetricStub.findAll.calledOnce, 'findAll should be called once')
+  t.true(MetricStub.findAll.calledWith(agentUuidArgs), 'findAll should be called with agentUuidArgs')
+
+  t.deepEqual(metric, metricFixtures.findByAgentUuid(uuid), 'metric should be the same')
+})
+
+test.serial('Metric#create', async t => {
+  let metric = await db.Metric.create(uuid, newMetric)
+
+  t.true(AgentStub.findOne.called, 'Agent findOne should be called on model')
+  t.true(AgentStub.findOne.calledOnce, 'Agent findOne should be called once')
+  t.true(AgentStub.findOne.calledWith(uuidArgs), 'findOne should be called with uuid args')
+  
+  t.true(MetricStub.create.called, 'create should be called on model')
+  t.true(MetricStub.create.calledOnce, 'create should be called once')
+  t.true(MetricStub.create.calledWith(newMetric), 'create should be called with specified args')
+
+  t.deepEqual(metric, newMetric, 'agent should be the same')
 })

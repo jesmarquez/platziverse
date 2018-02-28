@@ -5,7 +5,7 @@
   "description": "A Simple IoT Platform",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "SET DEBUG=platziverse:* && ava tests/ --verbose",
     "start": "SET NODE_ENV=production && node server.js",
     "start-dev": "SET DEBUG=platziverse:* && nodemon server.js",
     "lint": "standard"
@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/jesmarquez/platziverse#readme",
   "devDependencies": {
+    "ava": "^0.25.0",
     "nodemon": "^1.17.1",
-    "standard": "^11.0.0"
+    "standard": "^11.0.0",
+    "supertest": "^3.0.0"
   },
   "dependencies": {
     "chalk": "^2.3.1",

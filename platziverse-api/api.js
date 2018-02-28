@@ -7,6 +7,7 @@ const api = express.Router()
 
 api.get('/agents', (req, res) => {
   debug('A agent has come to /agents')
+  // res.status(201).send({})
   res.send({})
 })
 

@@ -23,6 +23,8 @@
   "devDependencies": {
     "ava": "^0.25.0",
     "nodemon": "^1.17.1",
+    "proxyquire": "^1.8.0",
+    "sinon": "^4.4.2",
     "standard": "^11.0.0",
     "supertest": "^3.0.0"
   },

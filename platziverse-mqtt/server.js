@@ -31,11 +31,8 @@ const settings = {
 const server = new mosca.Server(settings)
 const clients = new Map()
 
-<<<<<<< HEAD
-=======
 let Agent, Metric
 
->>>>>>> 0e66a22e2039dbc46c41866b42e3b7d028810592
 server.on('clientConnected', client => {
   debug(`Client Connected: ${client.id}`)
   clients.set(client.id, null)
@@ -89,16 +86,12 @@ server.on('published', async (packet, client) => {
   }
 })
 
-<<<<<<< HEAD
-server.on('ready', () => {
-=======
 server.on('ready', async () => {
   const services = await db(config).catch(handleFatalError)
 
   Agent = services.Agent
   Metric = services.Metric
 
->>>>>>> 0e66a22e2039dbc46c41866b42e3b7d028810592
   console.log(`${chalk.green('[platziverse-mqtt]')} server is running`)
 })
 
@@ -116,8 +109,4 @@ function handleError (err) {
 }
 
 process.on('uncaughtException', handleFatalError)
-<<<<<<< HEAD
 process.on('unhandledRejection', handleFatalError)
-=======
-process.on('unhandledRejection', handleFatalError)
->>>>>>> 0e66a22e2039dbc46c41866b42e3b7d028810592
